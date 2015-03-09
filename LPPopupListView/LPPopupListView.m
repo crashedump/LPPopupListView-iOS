@@ -48,18 +48,37 @@
 
 
 @implementation LPPopupListView
+{
+    //Content View
+    UIView *contentView;
+}
 
 static BOOL isShown = false;
 
 #pragma mark - Lifecycle
 
-- (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection
+- (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection disableBackgroundInteraction:(BOOL)diableInteraction
 {
-    CGRect frame = CGRectMake(point.x, point.y,size.width,size.height);
+    CGRect contentFrame = CGRectMake(point.x, point.y,size.width,size.height);
     
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor = [UIColor colorWithRed:(0.0/255.0) green:(108.0/255.0) blue:(192.0/255.0) alpha:0.7];
+    //Disable background Interaction
+    if (diableInteraction)
+    {
+        self = [super initWithFrame:[UIScreen mainScreen].bounds];
+    }
+    else
+    {
+        self = [super initWithFrame:contentFrame];
+        contentFrame = CGRectMake(0, 0, size.width, size.height);
+    }
+    
+    
+    if (self)
+    {
+        //Content View
+        contentView = [[UIView alloc] initWithFrame:contentFrame];
+        
+        contentView.backgroundColor = [UIColor colorWithRed:(0.0/255.0) green:(108.0/255.0) blue:(192.0/255.0) alpha:0.7];
         
         self.cellHighlightColor = [UIColor colorWithRed:(0.0/255.0) green:(60.0/255.0) blue:(127.0/255.0) alpha:0.5f];
         
@@ -70,11 +89,11 @@ static BOOL isShown = false;
 
         self.navigationBarView = [[UIView alloc] init];
         self.navigationBarView.backgroundColor = [UIColor colorWithRed:(0.0/255.0) green:(108.0/255.0) blue:(192.0/255.0) alpha:0.7];
-        [self addSubview:self.navigationBarView];
+        [contentView addSubview:self.navigationBarView];
 
         self.separatorLineView = [[UIView alloc] init];
         self.separatorLineView.backgroundColor = [UIColor whiteColor];
-        [self addSubview:self.separatorLineView];
+        [contentView addSubview:self.separatorLineView];
         
         self.titleLabel = [[UILabel alloc] init];
         self.titleLabel.backgroundColor = [UIColor clearColor];
@@ -93,7 +112,9 @@ static BOOL isShown = false;
         self.tableView.delegate = self;
         self.tableView.separatorColor = [UIColor colorWithWhite:1.0f alpha:0.2f];
         self.tableView.backgroundColor = [UIColor clearColor];
-        [self addSubview:self.tableView];
+        [contentView addSubview:self.tableView];
+        
+        [self addSubview:contentView];
     }
     return self;
 }
@@ -102,22 +123,22 @@ static BOOL isShown = false;
 {
     [super layoutSubviews];
     
-    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:self.bounds];
-    self.layer.masksToBounds = NO;
-    self.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
-    self.layer.shadowOpacity = 0.5f;
-    self.layer.shadowPath = shadowPath.CGPath;
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:contentView.bounds];
+    contentView.layer.masksToBounds = NO;
+    contentView.layer.shadowColor = [UIColor blackColor].CGColor;
+    contentView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+    contentView.layer.shadowOpacity = 0.5f;
+    contentView.layer.shadowPath = shadowPath.CGPath;
     
-    self.navigationBarView.frame = CGRectMake(0.0f, 0.0f, self.frame.size.width, navigationBarHeight);
+    self.navigationBarView.frame = CGRectMake(0.0f, 0.0f, contentView.frame.size.width, navigationBarHeight);
     
-    self.separatorLineView.frame = CGRectMake(0.0f, self.navigationBarView.frame.size.height, self.frame.size.width, separatorLineHeight);
+    self.separatorLineView.frame = CGRectMake(0.0f, self.navigationBarView.frame.size.height, contentView.frame.size.width, separatorLineHeight);
     
     self.closeButton.frame = CGRectMake((self.navigationBarView.frame.size.width-closeButtonWidth), 0.0f, closeButtonWidth, self.navigationBarView.frame.size.height);
     
     self.titleLabel.frame = CGRectMake(navigationBarTitlePadding, 0.0f, (self.navigationBarView.frame.size.width-closeButtonWidth-(navigationBarTitlePadding * 2)), navigationBarHeight);
     
-    self.tableView.frame = CGRectMake(0.0f, (navigationBarHeight + separatorLineHeight), self.frame.size.width, (self.frame.size.height-(navigationBarHeight + separatorLineHeight)));
+    self.tableView.frame = CGRectMake(0.0f, (navigationBarHeight + separatorLineHeight), contentView.frame.size.width, (contentView.frame.size.height-(navigationBarHeight + separatorLineHeight)));
 }
 
 - (void)closeButtonClicked:(id)sender
@@ -191,11 +212,11 @@ static BOOL isShown = false;
         self.closeAnimated = animated;
         
         if(animated) {
-            self.alpha = 0.0f;
+            contentView.alpha = 0.0f;
             [view addSubview:self];
             
             [UIView animateWithDuration:animationsDuration animations:^{
-                self.alpha = 1.0f;
+                contentView.alpha = 1.0f;
             }];
         } else {
             [view addSubview:self];
@@ -207,7 +228,7 @@ static BOOL isShown = false;
 {
     if (animated) {
         [UIView animateWithDuration:animationsDuration animations:^{
-            self.alpha = 0.0f;
+            contentView.alpha = 0.0f;
         } completion:^(BOOL finished) {
             isShown = false;
             

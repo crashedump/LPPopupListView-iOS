@@ -44,7 +44,7 @@
 @property (nonatomic, assign) BOOL closeAnimated;
 @property (nonatomic, strong) UIColor *cellHighlightColor;
 
-- (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection;
+- (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection disableBackgroundInteraction:(BOOL)diableInteraction;
 - (void)showInView:(UIView *)view animated:(BOOL)animated;
 - (void)hideAnimated:(BOOL)animated;
 
