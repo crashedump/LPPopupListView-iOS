@@ -190,6 +190,7 @@ static BOOL isShown = false;
     cell.highlightColor = self.cellHighlightColor;
     cell.textLabel.text = [self.arrayList objectAtIndex:indexPath.row];
     cell.textColor = self.cellTextColor;
+    cell.font = self.cellTextFont;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
 //    if (self.isMultipleSelection) {

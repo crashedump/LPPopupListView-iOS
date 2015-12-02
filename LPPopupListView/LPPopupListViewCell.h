@@ -35,6 +35,7 @@
 @property (nonatomic, strong) UIColor *highlightColor;
 @property (nonatomic, strong) UIImageView *rightImageView;
 @property (nonatomic, strong) UIColor *textColor;
+@property (nonatomic, strong) UIFont *font;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 

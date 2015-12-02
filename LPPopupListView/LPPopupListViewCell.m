@@ -74,6 +74,11 @@
     [self selection:selected];
 }
 
+- (void)setFont:(UIFont *)font {
+    _font = font;
+    self.textLabel.font = _font;
+}
+
 - (void)setTextColor:(UIColor *)textColor {
     _textColor = textColor;
     self.textLabel.textColor = _textColor;

@@ -48,6 +48,7 @@
     listView.separatorLineView.backgroundColor = [UIColor colorWithWhite:0.8 alpha:1.0];
     listView.cellSeparatorColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     listView.cellHeight = 88.;
+    listView.cellTextFont = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:8.];
     [listView showInView:self.navigationController.view animated:YES];
 }
 
