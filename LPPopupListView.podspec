@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "LPPopupListView@Color"
-  s.version      = "1.0.3.2"
+  s.version      = "1.0.3.3"
   s.summary      = "LPPopupListView is custom popup component for iOS with table for single or multiple selection."
   s.homepage     = "https://github.com/crashedump/LPPopupListView"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
