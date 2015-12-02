@@ -46,7 +46,7 @@
         self.textLabel.font = [UIFont fontWithName:@"Helvetica" size:16.0f];
         
         self.rightImageView = [UIImageView new];
-        self.rightImageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.rightImageView.contentMode = UIViewContentModeCenter;
         [self addSubview:self.rightImageView];
     }
     return self;
