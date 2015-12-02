@@ -41,7 +41,7 @@
     
     LPPopupListView *listView = [[LPPopupListView alloc] initWithTitle:@"List View" list:[self list] selectedIndexes:self.selectedIndexes point:point size:size multipleSelection:YES disableBackgroundInteraction:YES];
     listView.delegate = self;
-    listView.backgroundColor = [UIColor whiteColor];
+    listView.contentBackgroundColor = [UIColor whiteColor];
     listView.cellTextColor = [UIColor blackColor];
     listView.navigationBarView.backgroundColor = [UIColor whiteColor];
     listView.titleLabel.textColor = [UIColor blackColor];

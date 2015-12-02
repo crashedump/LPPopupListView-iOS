@@ -37,6 +37,7 @@
 
 @property (nonatomic, weak) id <LPPopupListViewDelegate> delegate;
 @property (nonatomic, strong) NSMutableIndexSet *selectedIndexes;
+@property (nonatomic, strong) UIColor *contentBackgroundColor;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UIView *navigationBarView;

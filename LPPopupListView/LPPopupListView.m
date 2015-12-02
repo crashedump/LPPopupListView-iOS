@@ -120,9 +120,15 @@ static BOOL isShown = false;
     return self;
 }
 
+- (void)setContentBackgroundColor:(UIColor *)contentBackgroundColor {
+    _contentBackgroundColor = contentBackgroundColor;
+    contentView.backgroundColor = _contentBackgroundColor;
+}
+
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
     [super setBackgroundColor:backgroundColor];
-    contentView.backgroundColor = backgroundColor;
+    if(!_contentBackgroundColor)
+        contentView.backgroundColor = backgroundColor;
 }
 
 - (void)setCellSeparatorColor:(UIColor *)cellSeparatorColor {
