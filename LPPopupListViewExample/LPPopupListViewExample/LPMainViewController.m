@@ -47,6 +47,7 @@
     listView.titleLabel.textColor = [UIColor blackColor];
     listView.separatorLineView.backgroundColor = [UIColor colorWithWhite:0.8 alpha:1.0];
     listView.cellSeparatorColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    listView.cellHeight = 88.;
     [listView showInView:self.navigationController.view animated:YES];
 }
 

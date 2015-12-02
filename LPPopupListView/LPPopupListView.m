@@ -116,6 +116,7 @@ static BOOL isShown = false;
         [contentView addSubview:self.tableView];
         
         self.checkmarkImage = [UIImage imageNamed:@"checkMark"];
+        self.cellHeight = navigationBarHeight;
         
         [self addSubview:contentView];
     }
@@ -166,6 +167,10 @@ static BOOL isShown = false;
 }
 
 #pragma mark - UITableView DataSource
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return self.cellHeight;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
