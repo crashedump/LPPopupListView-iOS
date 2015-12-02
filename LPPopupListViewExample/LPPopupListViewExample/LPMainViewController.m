@@ -39,7 +39,7 @@
     CGPoint point = CGPointMake(paddingLeftRight, (self.navigationController.navigationBar.frame.size.height + paddingTopBottom) + paddingTopBottom);
     CGSize size = CGSizeMake((self.view.frame.size.width - (paddingLeftRight * 2)), self.view.frame.size.height - ((self.navigationController.navigationBar.frame.size.height + paddingTopBottom) + (paddingTopBottom * 2)));
     
-    LPPopupListView *listView = [[LPPopupListView alloc] initWithTitle:@"List View" list:[self list] selectedIndexes:self.selectedIndexes point:point size:size multipleSelection:YES disableBackgroundInteraction:YES];
+    LPPopupListView *listView = [[LPPopupListView alloc] initWithTitle:@"List View" list:[self list] selectedIndexes:self.selectedIndexes point:point size:size multipleSelection:NO disableBackgroundInteraction:YES];
     listView.delegate = self;
     listView.contentBackgroundColor = [UIColor whiteColor];
     listView.cellTextColor = [UIColor blackColor];
@@ -55,6 +55,7 @@
 - (void)popupListView:(LPPopupListView *)popUpListView didSelectIndex:(NSInteger)index
 {
     NSLog(@"popUpListView - didSelectIndex: %ld", (long)index);
+    self.selectedIndexes = [[NSMutableIndexSet alloc] initWithIndex:index];
 }
 
 - (void)popupListViewDidHide:(LPPopupListView *)popUpListView selectedIndexes:(NSIndexSet *)selectedIndexes

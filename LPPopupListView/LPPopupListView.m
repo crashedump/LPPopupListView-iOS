@@ -115,6 +115,8 @@ static BOOL isShown = false;
         self.tableView.tableFooterView = [UIView new];
         [contentView addSubview:self.tableView];
         
+        self.checkmarkImage = [UIImage imageNamed:@"checkMark"];
+        
         [self addSubview:contentView];
     }
     return self;
@@ -185,13 +187,13 @@ static BOOL isShown = false;
     cell.textColor = self.cellTextColor;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    if (self.isMultipleSelection) {
+//    if (self.isMultipleSelection) {
         if ([self.selectedIndexes containsIndex:indexPath.row]) {
-            cell.rightImageView.image = [UIImage imageNamed:@"checkMark"];
+            cell.rightImageView.image = _checkmarkImage;
         } else {
             cell.rightImageView.image = nil;
         }
-    }
+//    }
     
     return cell;
 }

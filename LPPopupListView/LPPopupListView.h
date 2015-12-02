@@ -42,6 +42,7 @@
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UIView *navigationBarView;
 @property (nonatomic, strong) UIView *separatorLineView;
+@property (nonatomic, strong) UIImage *checkmarkImage;
 @property (nonatomic, assign) BOOL closeAnimated;
 @property (nonatomic, strong) UIColor *cellHighlightColor;
 @property (nonatomic, strong) UIColor *cellTextColor;
