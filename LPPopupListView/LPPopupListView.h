@@ -43,6 +43,8 @@
 @property (nonatomic, strong) UIView *separatorLineView;
 @property (nonatomic, assign) BOOL closeAnimated;
 @property (nonatomic, strong) UIColor *cellHighlightColor;
+@property (nonatomic, strong) UIColor *cellTextColor;
+@property (nonatomic, strong) UIColor *cellSeparatorColor;
 
 - (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection disableBackgroundInteraction:(BOOL)diableInteraction;
 - (void)showInView:(UIView *)view animated:(BOOL)animated;

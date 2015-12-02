@@ -112,11 +112,22 @@ static BOOL isShown = false;
         self.tableView.delegate = self;
         self.tableView.separatorColor = [UIColor colorWithWhite:1.0f alpha:0.2f];
         self.tableView.backgroundColor = [UIColor clearColor];
+        self.tableView.tableFooterView = [UIView new];
         [contentView addSubview:self.tableView];
         
         [self addSubview:contentView];
     }
     return self;
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+    [super setBackgroundColor:backgroundColor];
+    contentView.backgroundColor = backgroundColor;
+}
+
+- (void)setCellSeparatorColor:(UIColor *)cellSeparatorColor {
+    _cellSeparatorColor = cellSeparatorColor;
+    self.tableView.separatorColor = _cellSeparatorColor;
 }
 
 - (void)layoutSubviews
@@ -165,6 +176,7 @@ static BOOL isShown = false;
     LPPopupListViewCell *cell = [[LPPopupListViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     cell.highlightColor = self.cellHighlightColor;
     cell.textLabel.text = [self.arrayList objectAtIndex:indexPath.row];
+    cell.textColor = self.cellTextColor;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (self.isMultipleSelection) {
