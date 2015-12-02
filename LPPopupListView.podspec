@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
-  s.name         = "LPPopupListView"
-  s.version      = "1.0.3"
+  s.name         = "LPPopupListView@Color"
+  s.version      = "1.0.3c"
   s.summary      = "LPPopupListView is custom popup component for iOS with table for single or multiple selection."
-  s.homepage     = "https://github.com/luka1995/LPPopupListView"
+  s.homepage     = "https://github.com/crashedump/LPPopupListView"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
-  s.author       = { 'Luka Penger' => 'luka.penger@gmail.com' }
-  s.source       = { :git => "https://github.com/luka1995/LPPopupListView.git", :tag => s.version.to_s }
+  s.author       = { 'Luka Penger' => 'luka.penger@gmail.com', 'Crash Dump' => 'crash.dump@mail.ru' }
+  s.source       = { :git => "https://github.com/crashedump/LPPopupListView.git", :tag => s.version.to_s }
   s.platform     = :ios, '7.0'
   s.source_files = 'LPPopupListView/**/*.{h,m}'
   s.resources    = 'LPPopupListView/**/Images/*.png'
