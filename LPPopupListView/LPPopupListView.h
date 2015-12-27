@@ -52,6 +52,9 @@
 @property (nonatomic) CGFloat cellHeight;
 
 - (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection disableBackgroundInteraction:(BOOL)diableInteraction enableFilterBar:(BOOL)enableFilterBar;
+
+- (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection disableBackgroundInteraction:(BOOL)diableInteraction;
+
 - (void)showInView:(UIView *)view animated:(BOOL)animated;
 - (void)hideAnimated:(BOOL)animated;
 

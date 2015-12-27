@@ -72,6 +72,10 @@ static BOOL isShown = false;
 
 #pragma mark - Lifecycle
 
+- (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection disableBackgroundInteraction:(BOOL)diableInteraction {
+    return [self initWithTitle:title list:list selectedIndexes:selectedList point:point size:size multipleSelection:multipleSelection disableBackgroundInteraction:diableInteraction enableFilterBar:NO];
+}
+
 - (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection disableBackgroundInteraction:(BOOL)diableInteraction enableFilterBar:(BOOL)enableFilterBar
 {
     CGRect contentFrame = CGRectMake(point.x, point.y,size.width,size.height);
