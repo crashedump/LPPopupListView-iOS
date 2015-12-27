@@ -39,8 +39,9 @@
     CGPoint point = CGPointMake(paddingLeftRight, (self.navigationController.navigationBar.frame.size.height + paddingTopBottom) + paddingTopBottom);
     CGSize size = CGSizeMake((self.view.frame.size.width - (paddingLeftRight * 2)), self.view.frame.size.height - ((self.navigationController.navigationBar.frame.size.height + paddingTopBottom) + (paddingTopBottom * 2)));
     
-    LPPopupListView *listView = [[LPPopupListView alloc] initWithTitle:@"List View" list:[self list] selectedIndexes:self.selectedIndexes point:point size:size multipleSelection:NO disableBackgroundInteraction:YES];
+    LPPopupListView *listView = [[LPPopupListView alloc] initWithTitle:@"List View" list:[self list] selectedIndexes:self.selectedIndexes point:point size:size multipleSelection:NO disableBackgroundInteraction:YES enableFilterBar:YES];
     listView.delegate = self;
+    listView.filterPlaceholder = @"Some filter string";
     listView.contentBackgroundColor = [UIColor whiteColor];
     listView.cellTextColor = [UIColor blackColor];
     listView.navigationBarView.backgroundColor = [UIColor whiteColor];
@@ -76,7 +77,7 @@
 
 - (NSArray *)list
 {
-    return [NSArray arrayWithObjects:@"Car", @"Motor", @"Airplane", @"Boat", @"Bike", nil];
+    return [NSArray arrayWithObjects:@"Car", @"Motor", @"Airplane", @"Boat", @"Bike",@"Яхта", @"Паровоз", nil];
 }
 
 @end

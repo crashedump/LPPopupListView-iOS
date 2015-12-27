@@ -26,6 +26,7 @@
 		0CAE3A7918E4B6C70085617C /* closeButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CAE3A7118E4B6C70085617C /* closeButton@2x.png */; };
 		0CAE3A7A18E4B6C70085617C /* LPPopupListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAE3A7318E4B6C70085617C /* LPPopupListView.m */; };
 		0CAE3A7B18E4B6C70085617C /* LPPopupListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAE3A7518E4B6C70085617C /* LPPopupListViewCell.m */; };
+		8E35C284B0F619AFEC0CA176 /* libPods-LPPopupListViewExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68857EFBA886EA9946DB2B08 /* libPods-LPPopupListViewExample.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,9 @@
 		0CAE3A7318E4B6C70085617C /* LPPopupListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LPPopupListView.m; sourceTree = "<group>"; };
 		0CAE3A7418E4B6C70085617C /* LPPopupListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LPPopupListViewCell.h; sourceTree = "<group>"; };
 		0CAE3A7518E4B6C70085617C /* LPPopupListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LPPopupListViewCell.m; sourceTree = "<group>"; };
+		68857EFBA886EA9946DB2B08 /* libPods-LPPopupListViewExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LPPopupListViewExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		93058CB78E6905D777B04C7B /* Pods-LPPopupListViewExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LPPopupListViewExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-LPPopupListViewExample/Pods-LPPopupListViewExample.release.xcconfig"; sourceTree = "<group>"; };
+		E60A75D9BD89FC902C43D2BA /* Pods-LPPopupListViewExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LPPopupListViewExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LPPopupListViewExample/Pods-LPPopupListViewExample.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +79,7 @@
 			files = (
 				0CAE3A3D18E4B6560085617C /* UIKit.framework in Frameworks */,
 				0CAE3A3918E4B6560085617C /* Foundation.framework in Frameworks */,
+				8E35C284B0F619AFEC0CA176 /* libPods-LPPopupListViewExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +103,7 @@
 				0CAE3A5718E4B6560085617C /* LPPopupListViewExampleTests */,
 				0CAE3A3718E4B6560085617C /* Frameworks */,
 				0CAE3A3618E4B6560085617C /* Products */,
+				A9163C8C17F3061E32FE7C16 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -117,6 +123,7 @@
 				0CAE3A3A18E4B6560085617C /* CoreGraphics.framework */,
 				0CAE3A3C18E4B6560085617C /* UIKit.framework */,
 				0CAE3A5118E4B6560085617C /* XCTest.framework */,
+				68857EFBA886EA9946DB2B08 /* libPods-LPPopupListViewExample.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -189,6 +196,15 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		A9163C8C17F3061E32FE7C16 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E60A75D9BD89FC902C43D2BA /* Pods-LPPopupListViewExample.debug.xcconfig */,
+				93058CB78E6905D777B04C7B /* Pods-LPPopupListViewExample.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -196,9 +212,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0CAE3A6118E4B6560085617C /* Build configuration list for PBXNativeTarget "LPPopupListViewExample" */;
 			buildPhases = (
+				A28BFAB128A9756A04F727D5 /* Check Pods Manifest.lock */,
 				0CAE3A3118E4B6560085617C /* Sources */,
 				0CAE3A3218E4B6560085617C /* Frameworks */,
 				0CAE3A3318E4B6560085617C /* Resources */,
+				BCB606048DC58234B9CE10F5 /* Embed Pods Frameworks */,
+				58D59FB3834CF87EAA1EBFEB /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -287,6 +306,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		58D59FB3834CF87EAA1EBFEB /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LPPopupListViewExample/Pods-LPPopupListViewExample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A28BFAB128A9756A04F727D5 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		BCB606048DC58234B9CE10F5 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LPPopupListViewExample/Pods-LPPopupListViewExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0CAE3A3118E4B6560085617C /* Sources */ = {
@@ -411,6 +478,7 @@
 		};
 		0CAE3A6218E4B6560085617C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E60A75D9BD89FC902C43D2BA /* Pods-LPPopupListViewExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -425,6 +493,7 @@
 		};
 		0CAE3A6318E4B6560085617C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93058CB78E6905D777B04C7B /* Pods-LPPopupListViewExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

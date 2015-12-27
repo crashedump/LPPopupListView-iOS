@@ -1,0 +1,10 @@
+PODS:
+  - DAKeyboardControl (2.4.0)
+
+DEPENDENCIES:
+  - DAKeyboardControl
+
+SPEC CHECKSUMS:
+  DAKeyboardControl: 9d9bca22a5cc3c1d3cc61e24fbd208c3e84a3d2d
+
+COCOAPODS: 0.39.0
