@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "LPPopupListView@Color"
-  s.version      = "1.0.4"
+  s.version      = "1.0.4.1"
   s.summary      = "LPPopupListView is custom popup component for iOS with table for single or multiple selection."
   s.homepage     = "https://github.com/crashedump/LPPopupListView-iOS"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
@@ -11,5 +11,6 @@ Pod::Spec.new do |s|
   s.resources    = 'LPPopupListView/**/Images/*.png'
   s.frameworks    = "CoreLocation","AVFoundation"
   s.dependency 'DAKeyboardControl'
+  s.dependency 'ReactiveCocoa'
   s.requires_arc = true
 end

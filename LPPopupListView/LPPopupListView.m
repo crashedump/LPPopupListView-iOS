@@ -56,6 +56,7 @@
 @property (nonatomic, assign) BOOL isMultipleSelection;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UILabel *notFoundLabelView;
 @property (nonatomic, strong) UIActivityIndicatorView *waitView;
 
 @property (nonatomic, readwrite) RACSignal *searchTextSignal;
@@ -100,8 +101,9 @@ static BOOL isShown = false;
         [self commonInit];
         
         @weakify(self)
-        RAC(self, navigationBarTitle) = self.viewModel.titleSignal;
+//        RAC(self, navigationBarTitle) = self.viewModel.titleSignal;
 
+        RAC(self.titleLabel, text) = self.viewModel.titleSignal;
         [self.viewModel.listSignal subscribeNext:^(NSArray  *list) {
             @strongify(self)
             NSMutableArray *arrTmp = [NSMutableArray new];
@@ -113,7 +115,13 @@ static BOOL isShown = false;
             }];
             self.arrayFilteredList = [NSArray arrayWithArray:arrTmp];
             [self.tableView reloadData];
+            if([list count] && !self.viewModel.errorMessage.length){
+                self.notFoundLabelView.hidden = YES;
+            } else if(self.viewModel.errorMessage.length || self.viewModel.emptyMessage.length){
+                self.notFoundLabelView.hidden = NO;
+            }
         }];
+        self.notFoundLabelView.text = self.viewModel.emptyMessage;
 
         self.selectedIndexes = nil;
         self.isMultipleSelection = NO;
@@ -158,6 +166,8 @@ static BOOL isShown = false;
         __weak typeof(self) weakSelf = self;
         [self addKeyboardPanningWithFrameBasedActionHandler:^(CGRect keyboardFrameInView, BOOL opening, BOOL closing) {
             weakSelf.keybHeight = keyboardFrameInView.size.height;
+            if(closing)
+                weakSelf.keybHeight = 0;
             weakSelf.tableView.frame = CGRectMake(0.0f, (navigationBarHeight + separatorLineHeight), weakSelf.contentView.frame.size.width, (weakSelf.contentView.frame.size.height-(navigationBarHeight + separatorLineHeight + weakSelf.keybHeight)));
         } constraintBasedActionHandler:nil];
     }
@@ -216,6 +226,8 @@ static BOOL isShown = false;
         __weak typeof(self) weakSelf = self;
         [self addKeyboardPanningWithFrameBasedActionHandler:^(CGRect keyboardFrameInView, BOOL opening, BOOL closing) {
             weakSelf.keybHeight = keyboardFrameInView.size.height;
+            if(closing)
+                weakSelf.keybHeight = 0;
             weakSelf.tableView.frame = CGRectMake(0.0f, (navigationBarHeight + separatorLineHeight), weakSelf.contentView.frame.size.width, (weakSelf.contentView.frame.size.height-(navigationBarHeight + separatorLineHeight + weakSelf.keybHeight)));
         } constraintBasedActionHandler:nil];
     }
@@ -250,9 +262,20 @@ static BOOL isShown = false;
     self.tableView = [[UITableView alloc] init];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.tableView.separatorColor = [UIColor colorWithWhite:1.0f alpha:0.2f];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.tableFooterView = [UIView new];
+    
+    self.notFoundLabelView = [UILabel new];
+    self.notFoundLabelView.backgroundColor = [UIColor whiteColor];
+    self.notFoundLabelView.textColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    self.notFoundLabelView.numberOfLines = 0;
+    self.notFoundLabelView.textAlignment = NSTextAlignmentCenter;
+    self.notFoundLabelView.text = @"No results to display";
+    self.notFoundLabelView.hidden = YES;
+    self.notFoundLabelView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [self.tableView addSubview:self.notFoundLabelView];
     [self.contentView addSubview:self.tableView];
     
     self.checkmarkImage = [UIImage imageNamed:@"checkMark"];
@@ -303,7 +326,7 @@ static BOOL isShown = false;
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     [self.searchBar resignFirstResponder];
-    [self hideKeyboard];
+//    [self hideKeyboard];
 }
 
 - (void)layoutSubviews
@@ -326,6 +349,8 @@ static BOOL isShown = false;
     self.titleLabel.frame = CGRectMake(navigationBarTitlePadding, 0.0f, (self.navigationBarView.frame.size.width-closeButtonWidth-(navigationBarTitlePadding * 2)), navigationBarHeight);
     
     self.tableView.frame = CGRectMake(0.0f, (navigationBarHeight + separatorLineHeight), _contentView.frame.size.width, (_contentView.frame.size.height-(navigationBarHeight + separatorLineHeight + self.keybHeight)));
+    
+    self.notFoundLabelView.frame = self.tableView.bounds;
 }
 
 - (void)closeButtonClicked:(id)sender

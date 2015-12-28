@@ -19,6 +19,7 @@
 @property (nonatomic) BOOL executing;
 @property (nonatomic, strong) NSArray *arrayList;
 @property (nonatomic, strong) NSArray *filteredList;
+@property (nonatomic, readwrite) NSString *emptyMessage;
 
 @end
 
@@ -32,6 +33,8 @@
     self.listSignal = RACObserve(self, filteredList);
     
     self.arrayList = @[@"One", @"Два", @"Three", @"Четыре", @"Five", @"Шесть"];
+    
+    self.emptyMessage = @"Не найдено";
     
     @weakify(self)
     [RACObserve(self, filterText) subscribeNext:^(NSString * x) {

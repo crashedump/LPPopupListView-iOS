@@ -85,5 +85,7 @@
 @property (nonatomic, readonly) RACSignal *listSignal;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 @property (nonatomic, readonly) RACSignal *executingSignal;
+@property (nonatomic, strong) NSString *errorMessage;
+@property (nonatomic, readonly) NSString *emptyMessage;
 
 @end
