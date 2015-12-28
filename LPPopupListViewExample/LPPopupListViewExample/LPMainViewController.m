@@ -7,6 +7,7 @@
 //
 
 #import "LPMainViewController.h"
+#import "LPListViewModel.h"
 
 
 @interface LPMainViewController ()
@@ -30,6 +31,18 @@
 }
 
 #pragma mark - Button
+
+- (IBAction)onReactiveButtonClicked:(id)sender {
+    float paddingTopBottom = 20.0f;
+    float paddingLeftRight = 20.0f;
+    
+    CGPoint point = CGPointMake(paddingLeftRight, (self.navigationController.navigationBar.frame.size.height + paddingTopBottom) + paddingTopBottom);
+    CGSize size = CGSizeMake((self.view.frame.size.width - (paddingLeftRight * 2)), self.view.frame.size.height - ((self.navigationController.navigationBar.frame.size.height + paddingTopBottom) + (paddingTopBottom * 2)));
+    
+    LPListViewModel *vm = [[LPListViewModel alloc] initWithTitle:@"Reactive"];
+    LPPopupListView *listView = [[LPPopupListView alloc] initWithViewModel:vm point:point size:size disableBackgroundInteraction:YES enableFilterBar:YES];
+    [listView showInView:self.navigationController.view animated:YES];
+}
 
 - (IBAction)buttonClicked:(id)selector
 {

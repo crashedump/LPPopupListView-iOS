@@ -32,6 +32,9 @@
 
 
 @protocol LPPopupListViewDelegate;
+@protocol LPPopupViewModelProtocol;
+
+@class RACSignal;
 
 @interface LPPopupListView : UIView <UITableViewDataSource,UITableViewDelegate> 
 
@@ -49,11 +52,14 @@
 @property (nonatomic, strong) UIColor *cellSeparatorColor;
 @property (nonatomic, strong) UIFont *cellTextFont;
 @property (nonatomic, strong) NSString *filterPlaceholder;
+;
 @property (nonatomic) CGFloat cellHeight;
 
 - (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection disableBackgroundInteraction:(BOOL)diableInteraction enableFilterBar:(BOOL)enableFilterBar;
 
 - (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection disableBackgroundInteraction:(BOOL)diableInteraction;
+
+- (instancetype)initWithViewModel:(id<LPPopupViewModelProtocol>)viewModel point:(CGPoint)point size:(CGSize)size disableBackgroundInteraction:(BOOL)diableInteraction enableFilterBar:(BOOL)enableFilterBar;
 
 - (void)showInView:(UIView *)view animated:(BOOL)animated;
 - (void)hideAnimated:(BOOL)animated;
@@ -69,5 +75,15 @@
 
 - (void)popupListView:(LPPopupListView *)popupListView didSelectIndex:(NSInteger)index;
 - (void)popupListViewDidHide:(LPPopupListView *)popupListView selectedIndexes:(NSIndexSet *)selectedIndexes;
+
+@end
+
+@protocol LPPopupViewModelProtocol <NSObject>
+
+@property (nonatomic, readonly) RACSignal *titleSignal;
+@property (nonatomic, strong) NSString *filterText;
+@property (nonatomic, readonly) RACSignal *listSignal;
+@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
+@property (nonatomic, readonly) RACSignal *executingSignal;
 
 @end

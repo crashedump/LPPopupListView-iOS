@@ -27,6 +27,7 @@
 		0CAE3A7A18E4B6C70085617C /* LPPopupListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAE3A7318E4B6C70085617C /* LPPopupListView.m */; };
 		0CAE3A7B18E4B6C70085617C /* LPPopupListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAE3A7518E4B6C70085617C /* LPPopupListViewCell.m */; };
 		8E35C284B0F619AFEC0CA176 /* libPods-LPPopupListViewExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68857EFBA886EA9946DB2B08 /* libPods-LPPopupListViewExample.a */; };
+		FC6D9A6A1C3150BE007097AB /* LPListViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6D9A691C3150BE007097AB /* LPListViewModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,8 @@
 		68857EFBA886EA9946DB2B08 /* libPods-LPPopupListViewExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LPPopupListViewExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93058CB78E6905D777B04C7B /* Pods-LPPopupListViewExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LPPopupListViewExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-LPPopupListViewExample/Pods-LPPopupListViewExample.release.xcconfig"; sourceTree = "<group>"; };
 		E60A75D9BD89FC902C43D2BA /* Pods-LPPopupListViewExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LPPopupListViewExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LPPopupListViewExample/Pods-LPPopupListViewExample.debug.xcconfig"; sourceTree = "<group>"; };
+		FC6D9A681C3150BE007097AB /* LPListViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LPListViewModel.h; sourceTree = "<group>"; };
+		FC6D9A691C3150BE007097AB /* LPListViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LPListViewModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +140,8 @@
 				0CAE3A6818E4B6B40085617C /* LPMainViewController.h */,
 				0CAE3A6718E4B6B40085617C /* LPMainViewController.m */,
 				0CAE3A6918E4B6B40085617C /* LPMainViewController.xib */,
+				FC6D9A681C3150BE007097AB /* LPListViewModel.h */,
+				FC6D9A691C3150BE007097AB /* LPListViewModel.m */,
 				0CAE3A4A18E4B6560085617C /* Images.xcassets */,
 				0CAE3A3F18E4B6560085617C /* Supporting Files */,
 			);
@@ -364,6 +369,7 @@
 				0CAE3A6A18E4B6B40085617C /* LPMainViewController.m in Sources */,
 				0CAE3A4518E4B6560085617C /* main.m in Sources */,
 				0CAE3A7A18E4B6C70085617C /* LPPopupListView.m in Sources */,
+				FC6D9A6A1C3150BE007097AB /* LPListViewModel.m in Sources */,
 				0CAE3A7B18E4B6C70085617C /* LPPopupListViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

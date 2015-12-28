@@ -29,7 +29,7 @@
 
 #import "LPPopupListView.h"
 #import <DAKeyboardControl/DAKeyboardControl.h>
-
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 #define navigationBarHeight 44.0f
 #define separatorLineHeight 1.0f
@@ -56,8 +56,13 @@
 @property (nonatomic, assign) BOOL isMultipleSelection;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIActivityIndicatorView *waitView;
+
+@property (nonatomic, readwrite) RACSignal *searchTextSignal;
 
 @property (nonatomic) CGFloat keybHeight;
+
+@property (nonatomic, strong) id<LPPopupViewModelProtocol> viewModel;
 
 @end
 
@@ -71,6 +76,93 @@
 static BOOL isShown = false;
 
 #pragma mark - Lifecycle
+
+- (instancetype)initWithViewModel:(id<LPPopupViewModelProtocol>)viewModel point:(CGPoint)point size:(CGSize)size disableBackgroundInteraction:(BOOL)diableInteraction enableFilterBar:(BOOL)enableFilterBar {
+    CGRect contentFrame = CGRectMake(point.x, point.y,size.width,size.height);
+    
+    //Disable background Interaction
+    if (diableInteraction)
+    {
+        self = [super initWithFrame:[UIScreen mainScreen].bounds];
+    }
+    else
+    {
+        self = [super initWithFrame:contentFrame];
+        contentFrame = CGRectMake(0, 0, size.width, size.height);
+    }
+    
+    
+    if (self)
+    {
+        self.viewModel = viewModel;
+        self.contentView = [[UIView alloc] initWithFrame:contentFrame];
+        
+        [self commonInit];
+        
+        @weakify(self)
+        RAC(self, navigationBarTitle) = self.viewModel.titleSignal;
+
+        [self.viewModel.listSignal subscribeNext:^(NSArray  *list) {
+            @strongify(self)
+            NSMutableArray *arrTmp = [NSMutableArray new];
+            [list enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                CIdxTitle *item = [CIdxTitle new];
+                item.idx = idx;
+                item.title = obj;
+                [arrTmp addObject:item];
+            }];
+            self.arrayFilteredList = [NSArray arrayWithArray:arrTmp];
+            [self.tableView reloadData];
+        }];
+
+        self.selectedIndexes = nil;
+        self.isMultipleSelection = NO;
+        
+        if(enableFilterBar){
+            self.searchBar = [[UISearchBar alloc] initWithFrame:(CGRect){0,0, size.width, 44}];
+            self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+            self.searchBar.delegate = self;
+            self.tableView.tableHeaderView = self.searchBar;
+
+            [[self rac_signalForSelector:@selector(searchBar:textDidChange:) fromProtocol:@protocol(UISearchBarDelegate)] subscribeNext:^(RACTuple * x) {
+                @strongify(self)
+                self.viewModel.filterText = x.second;
+            }];
+            self.searchBar.text = @"";
+        }
+        
+        [[self rac_signalForSelector:@selector(tableView:didSelectRowAtIndexPath:) fromProtocol:@protocol(UITableViewDelegate)] subscribeNext:^(RACTuple * x) {
+            @strongify(self)
+            self.viewModel.selectedIndexPath = x.second;
+        }];
+        
+        self.waitView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.waitView.frame = (CGRect){self.contentView.frame.size.width/2 - self.waitView.frame.size.width/2, self.contentView.frame.size.height/2 - self.waitView.frame.size.height/2, self.waitView.frame.size.width, self.waitView.frame.size.height};
+        self.waitView.hidesWhenStopped = YES;
+        self.waitView.hidden = YES;
+        [self.contentView addSubview:self.waitView];
+        [self.viewModel.executingSignal subscribeNext:^(NSNumber * x) {
+            @strongify(self)
+            if([x boolValue]){
+                self.waitView.hidden = NO;
+                [self.waitView startAnimating];
+                self.contentView.userInteractionEnabled = NO;
+            } else {
+                [self.waitView stopAnimating];
+                self.contentView.userInteractionEnabled = YES;
+            }
+        }];
+        
+        [self addSubview:self.contentView];
+        self.keybHeight = 0;
+        __weak typeof(self) weakSelf = self;
+        [self addKeyboardPanningWithFrameBasedActionHandler:^(CGRect keyboardFrameInView, BOOL opening, BOOL closing) {
+            weakSelf.keybHeight = keyboardFrameInView.size.height;
+            weakSelf.tableView.frame = CGRectMake(0.0f, (navigationBarHeight + separatorLineHeight), weakSelf.contentView.frame.size.width, (weakSelf.contentView.frame.size.height-(navigationBarHeight + separatorLineHeight + weakSelf.keybHeight)));
+        } constraintBasedActionHandler:nil];
+    }
+    return self;
+}
 
 - (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection disableBackgroundInteraction:(BOOL)diableInteraction {
     return [self initWithTitle:title list:list selectedIndexes:selectedList point:point size:size multipleSelection:multipleSelection disableBackgroundInteraction:diableInteraction enableFilterBar:NO];
@@ -97,9 +189,7 @@ static BOOL isShown = false;
         //Content View
         self.contentView = [[UIView alloc] initWithFrame:contentFrame];
         
-        self.contentView.backgroundColor = [UIColor colorWithRed:(0.0/255.0) green:(108.0/255.0) blue:(192.0/255.0) alpha:0.7];
-        
-        self.cellHighlightColor = [UIColor colorWithRed:(0.0/255.0) green:(60.0/255.0) blue:(127.0/255.0) alpha:0.5f];
+        [self commonInit];
         
         self.navigationBarTitle = title;
         NSMutableArray *arrTmp = [NSMutableArray new];
@@ -113,33 +203,6 @@ static BOOL isShown = false;
         [self filterListWithText:@""];
         self.selectedIndexes = [[NSMutableIndexSet alloc] initWithIndexSet:selectedList];
         self.isMultipleSelection = multipleSelection;
-
-        self.navigationBarView = [[UIView alloc] init];
-        self.navigationBarView.backgroundColor = [UIColor colorWithRed:(0.0/255.0) green:(108.0/255.0) blue:(192.0/255.0) alpha:0.7];
-        [self.contentView addSubview:self.navigationBarView];
-
-        self.separatorLineView = [[UIView alloc] init];
-        self.separatorLineView.backgroundColor = [UIColor whiteColor];
-        [self.contentView addSubview:self.separatorLineView];
-        
-        self.titleLabel = [[UILabel alloc] init];
-        self.titleLabel.backgroundColor = [UIColor clearColor];
-        self.titleLabel.text = self.navigationBarTitle;
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-        self.titleLabel.textColor = [UIColor whiteColor];
-        [self.navigationBarView addSubview:self.titleLabel];
-        
-        self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.closeButton setImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
-        [self.closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents: UIControlEventTouchUpInside];
-        [self.navigationBarView addSubview:self.closeButton];
-        
-        self.tableView = [[UITableView alloc] init];
-        self.tableView.dataSource = self;
-        self.tableView.delegate = self;
-        self.tableView.separatorColor = [UIColor colorWithWhite:1.0f alpha:0.2f];
-        self.tableView.backgroundColor = [UIColor clearColor];
-        self.tableView.tableFooterView = [UIView new];
         
         if(enableFilterBar){
             self.searchBar = [[UISearchBar alloc] initWithFrame:(CGRect){0,0, size.width, 44}];
@@ -147,10 +210,6 @@ static BOOL isShown = false;
             self.searchBar.delegate = self;
             self.tableView.tableHeaderView = self.searchBar;
         }
-        [self.contentView addSubview:self.tableView];
-        
-        self.checkmarkImage = [UIImage imageNamed:@"checkMark"];
-        self.cellHeight = navigationBarHeight;
         
         [self addSubview:self.contentView];
         self.keybHeight = 0;
@@ -161,6 +220,43 @@ static BOOL isShown = false;
         } constraintBasedActionHandler:nil];
     }
     return self;
+}
+
+- (void)commonInit {
+    self.contentView.backgroundColor = [UIColor colorWithRed:(0.0/255.0) green:(108.0/255.0) blue:(192.0/255.0) alpha:0.7];
+    
+    self.cellHighlightColor = [UIColor colorWithRed:(0.0/255.0) green:(60.0/255.0) blue:(127.0/255.0) alpha:0.5f];
+    
+    self.navigationBarView = [[UIView alloc] init];
+    self.navigationBarView.backgroundColor = [UIColor colorWithRed:(0.0/255.0) green:(108.0/255.0) blue:(192.0/255.0) alpha:0.7];
+    [self.contentView addSubview:self.navigationBarView];
+    
+    self.separatorLineView = [[UIView alloc] init];
+    self.separatorLineView.backgroundColor = [UIColor whiteColor];
+    [self.contentView addSubview:self.separatorLineView];
+    
+    self.titleLabel = [[UILabel alloc] init];
+    self.titleLabel.backgroundColor = [UIColor clearColor];
+    self.titleLabel.text = self.navigationBarTitle;
+    self.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    self.titleLabel.textColor = [UIColor whiteColor];
+    [self.navigationBarView addSubview:self.titleLabel];
+    
+    self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.closeButton setImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
+    [self.closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents: UIControlEventTouchUpInside];
+    [self.navigationBarView addSubview:self.closeButton];
+    
+    self.tableView = [[UITableView alloc] init];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    self.tableView.separatorColor = [UIColor colorWithWhite:1.0f alpha:0.2f];
+    self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.tableFooterView = [UIView new];
+    [self.contentView addSubview:self.tableView];
+    
+    self.checkmarkImage = [UIImage imageNamed:@"checkMark"];
+    self.cellHeight = navigationBarHeight;
 }
 
 - (void)dealloc {
@@ -207,6 +303,7 @@ static BOOL isShown = false;
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     [self.searchBar resignFirstResponder];
+    [self hideKeyboard];
 }
 
 - (void)layoutSubviews

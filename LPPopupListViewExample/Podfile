@@ -5,6 +5,7 @@
 
 target 'LPPopupListViewExample' do
 pod 'DAKeyboardControl'
+pod 'ReactiveCocoa'
 end
 
 target 'LPPopupListViewExampleTests' do
