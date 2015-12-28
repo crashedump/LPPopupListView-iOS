@@ -121,7 +121,7 @@ static BOOL isShown = false;
                 self.notFoundLabelView.hidden = NO;
             }
         }];
-        self.notFoundLabelView.text = self.viewModel.emptyMessage;
+        RAC(self.notFoundLabelView, text) = RACObserve(self.viewModel, emptyMessage);
 
         self.selectedIndexes = nil;
         self.isMultipleSelection = NO;
