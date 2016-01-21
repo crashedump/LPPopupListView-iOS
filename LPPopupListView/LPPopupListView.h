@@ -53,7 +53,7 @@
 @property (nonatomic, strong) UIColor *cellSeparatorColor;
 @property (nonatomic, strong) UIFont *cellTextFont;
 @property (nonatomic, strong) NSString *filterPlaceholder;
-;
+
 @property (nonatomic) CGFloat cellHeight;
 
 - (id)initWithTitle:(NSString *)title list:(NSArray *)list selectedIndexes:(NSIndexSet *)selectedList point:(CGPoint)point size:(CGSize)size multipleSelection:(BOOL)multipleSelection disableBackgroundInteraction:(BOOL)diableInteraction enableFilterBar:(BOOL)enableFilterBar;
