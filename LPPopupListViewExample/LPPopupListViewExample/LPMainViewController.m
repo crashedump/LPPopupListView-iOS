@@ -52,17 +52,9 @@
     CGPoint point = CGPointMake(paddingLeftRight, (self.navigationController.navigationBar.frame.size.height + paddingTopBottom) + paddingTopBottom);
     CGSize size = CGSizeMake((self.view.frame.size.width - (paddingLeftRight * 2)), self.view.frame.size.height - ((self.navigationController.navigationBar.frame.size.height + paddingTopBottom) + (paddingTopBottom * 2)));
     
-    LPPopupListView *listView = [[LPPopupListView alloc] initWithTitle:@"List View" list:[self list] selectedIndexes:self.selectedIndexes point:point size:size multipleSelection:NO disableBackgroundInteraction:YES];
+    LPPopupListView *listView = [[LPPopupListView alloc] initWithTitle:@"List View" list:[self list] selectedIndexes:self.selectedIndexes point:point size:size multipleSelection:YES disableBackgroundInteraction:YES];
     listView.delegate = self;
-    listView.filterPlaceholder = @"Some filter string";
-    listView.contentBackgroundColor = [UIColor whiteColor];
-    listView.cellTextColor = [UIColor blackColor];
-    listView.navigationBarView.backgroundColor = [UIColor whiteColor];
-    listView.titleLabel.textColor = [UIColor blackColor];
-    listView.separatorLineView.backgroundColor = [UIColor colorWithWhite:0.8 alpha:1.0];
-    listView.cellSeparatorColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-    listView.cellHeight = 88.;
-    listView.cellTextFont = [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:8.];
+    listView.titleLabel.text = @"Select";
     [listView showInView:self.navigationController.view animated:YES];
 }
 

@@ -97,6 +97,7 @@ static BOOL isShown = false;
     {
         self.viewModel = viewModel;
         self.contentView = [[UIView alloc] initWithFrame:contentFrame];
+        self.isMultipleSelection = NO;
         
         [self commonInit];
         
@@ -129,7 +130,7 @@ static BOOL isShown = false;
         RAC(self.notFoundLabelView, text) = RACObserve(self.viewModel, emptyMessage);
 
         self.selectedIndexes = nil;
-        self.isMultipleSelection = NO;
+        
         
         if(enableFilterBar){
             self.searchBar = [[UISearchBar alloc] initWithFrame:(CGRect){0,0, size.width, 44}];
@@ -203,6 +204,7 @@ static BOOL isShown = false;
     {
         //Content View
         self.contentView = [[UIView alloc] initWithFrame:contentFrame];
+        self.isMultipleSelection = multipleSelection;
         
         [self commonInit];
         
@@ -217,7 +219,6 @@ static BOOL isShown = false;
         self.arrayList = [NSArray arrayWithArray:arrTmp];
         [self filterListWithText:@""];
         self.selectedIndexes = [[NSMutableIndexSet alloc] initWithIndexSet:selectedList];
-        self.isMultipleSelection = multipleSelection;
         
         if(enableFilterBar){
             self.searchBar = [[UISearchBar alloc] initWithFrame:(CGRect){0,0, size.width, 44}];
@@ -257,6 +258,10 @@ static BOOL isShown = false;
     self.titleLabel.text = self.navigationBarTitle;
     self.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
     self.titleLabel.textColor = [UIColor whiteColor];
+    if(self.isMultipleSelection){
+        self.titleLabel.textAlignment = NSTextAlignmentCenter;
+        self.titleLabel.backgroundColor = [UIColor orangeColor];
+    }
     [self.navigationBarView addSubview:self.titleLabel];
     
     self.okButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -269,7 +274,8 @@ static BOOL isShown = false;
     //[self.okButton setImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
     [self.cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [self.cancelButton addTarget:self action:@selector(cancelButtonClicked:) forControlEvents: UIControlEventTouchUpInside];
-    [self.navigationBarView addSubview:self.cancelButton];
+    if(self.isMultipleSelection)
+        [self.navigationBarView addSubview:self.cancelButton];
     
     self.tableView = [[UITableView alloc] init];
     self.tableView.dataSource = self;
@@ -356,10 +362,14 @@ static BOOL isShown = false;
     
     self.separatorLineView.frame = CGRectMake(0.0f, self.navigationBarView.frame.size.height, _contentView.frame.size.width, separatorLineHeight);
     
-    self.okButton.frame = CGRectMake((self.navigationBarView.frame.size.width*3/4), 0.0f, self.navigationBarView.frame.size.width/4, self.navigationBarView.frame.size.height);
-    self.cancelButton.frame = CGRectMake(self.navigationBarView.frame.size.width/2, 0.0f, self.navigationBarView.frame.size.width/4, self.navigationBarView.frame.size.height);
-    
-    self.titleLabel.frame = CGRectMake(navigationBarTitlePadding, 0.0f, (self.navigationBarView.frame.size.width-self.navigationBarView.frame.size.width/2 -(navigationBarTitlePadding * 2)), navigationBarHeight);
+    if(self.isMultipleSelection){
+        self.okButton.frame = CGRectMake((self.navigationBarView.frame.size.width*3/4), 0.0f, self.navigationBarView.frame.size.width/4, self.navigationBarView.frame.size.height);
+        self.cancelButton.frame = CGRectMake(0., 0.0f, self.navigationBarView.frame.size.width/4, self.navigationBarView.frame.size.height);
+        self.titleLabel.frame = CGRectMake(self.navigationBarView.frame.size.width/4, 0.0f, (self.navigationBarView.frame.size.width-self.navigationBarView.frame.size.width/2), navigationBarHeight);
+    } else {
+        self.okButton.frame = CGRectMake((self.navigationBarView.frame.size.width*3/4), 0.0f, self.navigationBarView.frame.size.width/4, self.navigationBarView.frame.size.height);
+        self.titleLabel.frame = CGRectMake(navigationBarTitlePadding, 0.0f, (self.navigationBarView.frame.size.width-self.navigationBarView.frame.size.width/4 -(navigationBarTitlePadding * 2)), navigationBarHeight);
+    }
     
     self.tableView.frame = CGRectMake(0.0f, (navigationBarHeight + separatorLineHeight), _contentView.frame.size.width, (_contentView.frame.size.height-(navigationBarHeight + separatorLineHeight + self.keybHeight)));
     
