@@ -361,10 +361,11 @@ static BOOL isShown = false;
     
     self.separatorLineView.frame = CGRectMake(0.0f, self.navigationBarView.frame.size.height, _contentView.frame.size.width, separatorLineHeight);
     
+    CGFloat w = self.navigationBarView.frame.size.width - navigationBarTitlePadding * 2;
     if(self.isMultipleSelection){
-        self.okButton.frame = CGRectMake((self.navigationBarView.frame.size.width*3/4), 0.0f, self.navigationBarView.frame.size.width/4, self.navigationBarView.frame.size.height);
-        self.cancelButton.frame = CGRectMake(0., 0.0f, self.navigationBarView.frame.size.width/4, self.navigationBarView.frame.size.height);
-        self.titleLabel.frame = CGRectMake(self.navigationBarView.frame.size.width/4, 0.0f, (self.navigationBarView.frame.size.width-self.navigationBarView.frame.size.width/2), navigationBarHeight);
+        self.okButton.frame = CGRectMake((w*3/4), 0.0f, w/4 + navigationBarTitlePadding, self.navigationBarView.frame.size.height);
+        self.cancelButton.frame = CGRectMake(navigationBarTitlePadding, 0.0f, w/4 + navigationBarTitlePadding, self.navigationBarView.frame.size.height);
+        self.titleLabel.frame = CGRectMake(w/2 - (w-self.navigationBarView.frame.size.width/2 - (navigationBarTitlePadding * 2))/2 + navigationBarTitlePadding, 0.0f, (w-self.navigationBarView.frame.size.width/2 - (navigationBarTitlePadding * 2)), navigationBarHeight);
     } else {
         self.okButton.frame = CGRectMake((self.navigationBarView.frame.size.width*3/4), 0.0f, self.navigationBarView.frame.size.width/4, self.navigationBarView.frame.size.height);
         self.titleLabel.frame = CGRectMake(navigationBarTitlePadding, 0.0f, (self.navigationBarView.frame.size.width-self.navigationBarView.frame.size.width/4 -(navigationBarTitlePadding * 2)), navigationBarHeight);

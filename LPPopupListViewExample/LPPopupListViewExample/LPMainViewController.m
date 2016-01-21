@@ -55,6 +55,7 @@
     LPPopupListView *listView = [[LPPopupListView alloc] initWithTitle:@"List View" list:[self list] selectedIndexes:self.selectedIndexes point:point size:size multipleSelection:YES disableBackgroundInteraction:YES];
     listView.delegate = self;
     listView.titleLabel.text = @"Select";
+    [listView.cancelButton setTitle:@"Отменить" forState:UIControlStateNormal];
     [listView showInView:self.navigationController.view animated:YES];
 }
 
