@@ -21,6 +21,9 @@
 @property (nonatomic, strong) NSString *errorMessage;
 @property (nonatomic, readonly) NSString *emptyMessage;
 
+@property (nonatomic, readonly) NSString *okButtonTitle;
+@property (nonatomic, readonly) NSString *cancelButtonTitle;
+
 - (instancetype)initWithTitle:(NSString*)title;
 
 @end

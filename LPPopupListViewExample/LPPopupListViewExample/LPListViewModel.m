@@ -21,6 +21,9 @@
 @property (nonatomic, strong) NSArray *filteredList;
 @property (nonatomic, readwrite) NSString *emptyMessage;
 
+@property (nonatomic, readwrite) NSString *okButtonTitle;
+@property (nonatomic, readwrite) NSString *cancelButtonTitle;
+
 @end
 
 @implementation LPListViewModel
@@ -35,6 +38,8 @@
     self.arrayList = @[@"One", @"Два", @"Three", @"Четыре", @"Five", @"Шесть"];
     
     self.emptyMessage = @"Не найдено";
+    self.okButtonTitle = @"Ок";
+    self.cancelButtonTitle = @"Отмена";
     
     @weakify(self)
     [RACObserve(self, filterText) subscribeNext:^(NSString * x) {
@@ -57,7 +62,7 @@
     [[RACObserve(self, selectedIndexPath) filter:^BOOL(id value) {
         return value != nil;
     }] subscribeNext:^(NSIndexPath * x) {
-        NSLog(@"s: %d, r: %d", x.section, x.row);
+        NSLog(@"s: %ld, r: %ld", (long)x.section, (long)x.row);
         NSLog(@"v: %@", self.filteredList[x.row]);
     }];
     
