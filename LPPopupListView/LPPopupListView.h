@@ -42,7 +42,8 @@
 @property (nonatomic, strong) NSMutableIndexSet *selectedIndexes;
 @property (nonatomic, strong) UIColor *contentBackgroundColor;
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UIButton *closeButton;
+@property (nonatomic, strong) UIButton *okButton;
+@property (nonatomic, strong) UIButton *cancelButton;
 @property (nonatomic, strong) UIView *navigationBarView;
 @property (nonatomic, strong) UIView *separatorLineView;
 @property (nonatomic, strong) UIImage *checkmarkImage;
@@ -62,7 +63,7 @@
 - (instancetype)initWithViewModel:(id<LPPopupViewModelProtocol>)viewModel point:(CGPoint)point size:(CGSize)size disableBackgroundInteraction:(BOOL)diableInteraction enableFilterBar:(BOOL)enableFilterBar;
 
 - (void)showInView:(UIView *)view animated:(BOOL)animated;
-- (void)hideAnimated:(BOOL)animated;
+- (void)hideAnimated:(BOOL)animated isCanceled:(BOOL)canceled;
 
 @end
 
@@ -87,5 +88,9 @@
 @property (nonatomic, readonly) RACSignal *executingSignal;
 @property (nonatomic, strong) NSString *errorMessage;
 @property (nonatomic, readonly) NSString *emptyMessage;
+
+@optional
+@property (nonatomic, readonly) NSString *okButtonTitle;
+@property (nonatomic, readonly) NSString *cancelButtonTitle;
 
 @end

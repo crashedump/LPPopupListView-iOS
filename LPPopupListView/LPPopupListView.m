@@ -100,6 +100,11 @@ static BOOL isShown = false;
         
         [self commonInit];
         
+        if([self.viewModel respondsToSelector:@selector(okButtonTitle)])
+           [self.okButton setTitle:self.viewModel.okButtonTitle forState:UIControlStateNormal];
+        if([self.viewModel respondsToSelector:@selector(cancelButtonTitle)])
+            [self.cancelButton setTitle:self.viewModel.cancelButtonTitle forState:UIControlStateNormal];
+        
         @weakify(self)
 //        RAC(self, navigationBarTitle) = self.viewModel.titleSignal;
 
@@ -254,10 +259,17 @@ static BOOL isShown = false;
     self.titleLabel.textColor = [UIColor whiteColor];
     [self.navigationBarView addSubview:self.titleLabel];
     
-    self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.closeButton setImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
-    [self.closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents: UIControlEventTouchUpInside];
-    [self.navigationBarView addSubview:self.closeButton];
+    self.okButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    //[self.okButton setImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
+    [self.okButton setTitle:@"OK" forState:UIControlStateNormal];
+    [self.okButton addTarget:self action:@selector(okButtonClicked:) forControlEvents: UIControlEventTouchUpInside];
+    [self.navigationBarView addSubview:self.okButton];
+    
+    self.cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    //[self.okButton setImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
+    [self.cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [self.cancelButton addTarget:self action:@selector(cancelButtonClicked:) forControlEvents: UIControlEventTouchUpInside];
+    [self.navigationBarView addSubview:self.cancelButton];
     
     self.tableView = [[UITableView alloc] init];
     self.tableView.dataSource = self;
@@ -344,18 +356,24 @@ static BOOL isShown = false;
     
     self.separatorLineView.frame = CGRectMake(0.0f, self.navigationBarView.frame.size.height, _contentView.frame.size.width, separatorLineHeight);
     
-    self.closeButton.frame = CGRectMake((self.navigationBarView.frame.size.width-closeButtonWidth), 0.0f, closeButtonWidth, self.navigationBarView.frame.size.height);
+    self.okButton.frame = CGRectMake((self.navigationBarView.frame.size.width*3/4), 0.0f, self.navigationBarView.frame.size.width/4, self.navigationBarView.frame.size.height);
+    self.cancelButton.frame = CGRectMake(self.navigationBarView.frame.size.width/2, 0.0f, self.navigationBarView.frame.size.width/4, self.navigationBarView.frame.size.height);
     
-    self.titleLabel.frame = CGRectMake(navigationBarTitlePadding, 0.0f, (self.navigationBarView.frame.size.width-closeButtonWidth-(navigationBarTitlePadding * 2)), navigationBarHeight);
+    self.titleLabel.frame = CGRectMake(navigationBarTitlePadding, 0.0f, (self.navigationBarView.frame.size.width-self.navigationBarView.frame.size.width/2 -(navigationBarTitlePadding * 2)), navigationBarHeight);
     
     self.tableView.frame = CGRectMake(0.0f, (navigationBarHeight + separatorLineHeight), _contentView.frame.size.width, (_contentView.frame.size.height-(navigationBarHeight + separatorLineHeight + self.keybHeight)));
     
     self.notFoundLabelView.frame = self.tableView.bounds;
 }
 
-- (void)closeButtonClicked:(id)sender
+- (void)okButtonClicked:(id)sender
 {
-    [self hideAnimated:self.closeAnimated];
+    [self hideAnimated:self.closeAnimated isCanceled:NO];
+}
+
+- (void)cancelButtonClicked:(id)sender
+{
+    [self hideAnimated:self.closeAnimated isCanceled:YES];
 }
 
 #pragma mark - UITableView DataSource
@@ -418,7 +436,7 @@ static BOOL isShown = false;
             [self.delegate popupListView:self didSelectIndex:indexPath.row];
         }
         
-        [self hideAnimated:self.closeAnimated];
+        [self hideAnimated:self.closeAnimated isCanceled:NO];
     }
 }
 
@@ -443,7 +461,7 @@ static BOOL isShown = false;
     }
 }
 
-- (void)hideAnimated:(BOOL)animated
+- (void)hideAnimated:(BOOL)animated isCanceled:(BOOL)canceled
 {
     if (animated) {
         [UIView animateWithDuration:animationsDuration animations:^{
@@ -451,7 +469,7 @@ static BOOL isShown = false;
         } completion:^(BOOL finished) {
             isShown = false;
             
-            if (self.isMultipleSelection) {
+            if (self.isMultipleSelection && !canceled) {
                 if ([self.delegate respondsToSelector:@selector(popupListViewDidHide:selectedIndexes:)]) {
                     [self.delegate popupListViewDidHide:self selectedIndexes:self.selectedIndexes];
                 }
@@ -462,7 +480,7 @@ static BOOL isShown = false;
     } else {
         isShown = false;
         
-        if (self.isMultipleSelection) {
+        if (self.isMultipleSelection && !canceled) {
             if ([self.delegate respondsToSelector:@selector(popupListViewDidHide:selectedIndexes:)]) {
                 [self.delegate popupListViewDidHide:self selectedIndexes:self.selectedIndexes];
             }
