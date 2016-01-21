@@ -260,7 +260,6 @@ static BOOL isShown = false;
     self.titleLabel.textColor = [UIColor whiteColor];
     if(self.isMultipleSelection){
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
-        self.titleLabel.backgroundColor = [UIColor orangeColor];
     }
     [self.navigationBarView addSubview:self.titleLabel];
     
